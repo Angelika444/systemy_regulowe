@@ -1,0 +1,39 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Zapytanie;
+
+
+rule "pregnant"
+    when
+        z : Zapytanie( status == Zapytanie.START, noMoreQuestions==0,myMessage : message )
+    then
+        System.out.println( myMessage );
+        z.setMessage( "0-tak, 1-nie, 2-no, but..., 3-what do you mean?" );
+        z.readNumber();
+        z.setStatus(z.getNumber());
+        z.setLast("pregnant");
+        update( z );
+end
+
+rule "black"
+    when
+        z : Zapytanie( last=="pregnant", status == Zapytanie.YES, noMoreQuestions==0,myMessage : message )
+    then
+        System.out.println( "czarni?" );
+        z.setMessage( "0-tak, 1-nie, 2-barely" );
+        z.readNumber();
+        z.setStatus(z.getNumber());
+        z.setLast("black");
+        update( z );
+end
+
+rule "d.a."
+    when
+        z : Zapytanie( last=="black", status == Zapytanie.NO, noMoreQuestions==0,myMessage : message )
+    then
+       	System.out.println( "Serial: Downtown Abbey" );
+        z.setNoMoreQuestions(1);
+        z.setMessage( "No. These..." );
+        z.setLast("d.a.");
+        update( z );
+end
