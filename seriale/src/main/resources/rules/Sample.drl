@@ -1,39 +1,451 @@
 package com.sample
  
-import com.sample.DroolsTest.Zapytanie;
-
+import com.sample.DroolsTest.Question;
+import com.sample.DroolsTest.Fact;
 
 rule "pregnant"
     when
-        z : Zapytanie( status == Zapytanie.START, noMoreQuestions==0,myMessage : message )
     then
-        System.out.println( myMessage );
-        z.setMessage( "0-tak, 1-nie, 2-no, but..., 3-what do you mean?" );
-        z.readNumber();
-        z.setStatus(z.getNumber());
-        z.setLast("pregnant");
-        update( z );
+        System.out.println( "pregnant" );
+        
+        Question q=new Question("Has a major character been pregnant during the show?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.addAns("No, but she thought she was");
+        q.addAns("What do you mean, 'during'?");
+        q.showQuestion();
+        
+        insert(new Fact("pregnant", q.getUserAnswer())); 
 end
 
 rule "black"
     when
-        z : Zapytanie( last=="pregnant", status == Zapytanie.YES, noMoreQuestions==0,myMessage : message )
+        f: Fact(name.equals("pregnant"), answer.equals("Yes"))
     then
-        System.out.println( "czarni?" );
-        z.setMessage( "0-tak, 1-nie, 2-barely" );
-        z.readNumber();
-        z.setStatus(z.getNumber());
-        z.setLast("black");
-        update( z );
+        System.out.println( "black" );
+        
+        Question q=new Question("Are there any black people?"); 
+        q.addAns("Yes");
+        q.addAns("No. These characters are so white, they're frightened of the Irish");
+        q.addAns("Barely");
+        q.showQuestion();
+        
+        insert(new Fact("black", q.getUserAnswer()));
 end
 
-rule "d.a."
+rule "DowntonAbbey"
     when
-        z : Zapytanie( last=="black", status == Zapytanie.NO, noMoreQuestions==0,myMessage : message )
+        f: Fact(name.equals("black"), answer.equals("No. These characters are so white, they're frightened of the Irish"))
+    then     
+        insert(new Fact("DowntonAbbey", "stop"));
+end
+
+rule "zombie"
+    when
+        f: Fact(name.equals("black"), answer.equals("Yes"))
     then
-       	System.out.println( "Serial: Downtown Abbey" );
-        z.setNoMoreQuestions(1);
-        z.setMessage( "No. These..." );
-        z.setLast("d.a.");
-        update( z );
+        System.out.println( "zombie" );
+        
+        Question q=new Question("Have there been zombies?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.addAns("Only if you count dazed employees");
+        q.showQuestion();
+        
+        insert(new Fact("zombie", q.getUserAnswer()));
+end
+
+rule "TheOffice"
+    when
+        f: Fact(name.equals("zombie"), answer.equals("Only if you count dazed employees"))
+    then     
+        insert(new Fact("TheOffice", "stop"));
+end
+
+rule "realZombie"
+    when
+        f: Fact(name.equals("zombie"), answer.equals("Yes"))
+    then
+        System.out.println( "realZombie" );
+        
+        Question q=new Question("Real zombies?"); 
+        q.addAns("Uh,yes, hello, only ALL THE TIME");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("realZombie", q.getUserAnswer()));
+end
+
+rule "WalkingDead"
+    when
+        f: Fact(name.equals("realZombie"), answer.equals("Uh,yes, hello, only ALL THE TIME"))
+    then 
+        insert(new Fact("WalkingDead", "stop"));
+end
+
+rule "Community"
+    when
+        f: Fact(name.equals("realZombie"), answer.equals("No"))
+    then  
+        insert(new Fact("Community", "stop"));
+end
+
+rule "getShot"
+    when
+        f: Fact(name.equals("zombie"), answer.equals("No"))
+    then
+        Question q=new Question("Roughly how often do people get shot?"); 
+        q.addAns("Every so often");
+        q.addAns("Never");
+        q.addAns("Literally all the time");
+        q.showQuestion();
+        
+        insert(new Fact("getShot", q.getUserAnswer()));
+end
+
+rule "BoardwalkEmpire"
+    when
+        f: Fact(name.equals("getShot"), answer.equals("Every so often"))
+    then 
+        insert(new Fact("BoardwalkEmpire", "stop"));
+end
+
+rule "sing"
+    when
+        f: Fact(name.equals("getShot"), answer.equals("Never"))
+    then
+        Question q=new Question("Do the characters sing a lot?"); 
+        q.addAns("Big time");
+        q.addAns("No, thank God");
+        q.showQuestion();
+        
+        insert(new Fact("sing", q.getUserAnswer()));
+end
+
+rule "songs"
+    when
+        f: Fact(name.equals("sing"), answer.equals("Big time"))
+    then
+        Question q=new Question("Covers or original songs?"); 
+        q.addAns("Originals. Horrible, horrible originals.");
+        q.addAns("Covers. Horrible, horrible Covers.");
+        q.showQuestion();
+        
+        insert(new Fact("songs", q.getUserAnswer()));
+end
+
+rule "Smash"
+    when
+        f: Fact(name.equals("songs"), answer.equals("Originals. Horrible, horrible originals."))
+    then 
+        insert(new Fact("Smash", "stop"));
+end
+
+rule "Glee"
+    when
+        f: Fact(name.equals("songs"), answer.equals("Covers. Horrible, horrible Covers."))
+    then 
+        insert(new Fact("Glee", "stop"));
+end
+
+rule "Parenthood"
+    when
+        f: Fact(name.equals("sing"), answer.equals("No, thank God"))
+    then 
+        insert(new Fact("Parenthood", "stop"));
+end
+
+rule "Justified"
+    when
+        f: Fact(name.equals("getShot"), answer.equals("Literally all the time"))
+    then 
+        insert(new Fact("Justified", "stop"));
+end
+
+rule "cellPhones"
+    when
+        f: Fact(name.equals("black"), answer.equals("Barely"))
+    then
+        
+        Question q=new Question("Do the characters use cell phones?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("cellPhones", q.getUserAnswer()));
+end
+
+rule "sports"
+    when
+        f: Fact(name.equals("cellPhones"), answer.equals("Yes"))
+    then
+        
+        Question q=new Question("Do they play sports?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("sports", q.getUserAnswer()));
+end
+
+rule "haunted"
+    when
+        f: Fact(name.equals("sports"), answer.equals("No"))
+    then
+        
+        Question q=new Question("Is stuff haunted?"); 
+        q.addAns("Yes, almost everything");
+        q.addAns("No, nothing");
+        q.addAns("Only Walt's eyes, with the absolute corruption of his innermost soul");
+        q.showQuestion();
+        
+        insert(new Fact("haunted", q.getUserAnswer()));
+end
+
+rule "mother"
+    when
+        f: Fact(name.equals("haunted"), answer.equals("No, nothing"))
+    then
+        
+        Question q=new Question("Do we know who everyone's mother is?"); 
+        q.addAns("Yeah...? That's a weird question.");
+        q.addAns("No, and frankly it started getting ridiculous four seasons ago. Come on, writers, just tell us.");
+        q.showQuestion();
+        
+        insert(new Fact("mother", q.getUserAnswer()));
+end
+
+rule "ModernFamily"
+    when
+        f: Fact(name.equals("mother"), answer.equals("Yeah...? That's a weird question."))
+    then
+        insert(new Fact("ModernFamily", "stop"));
+end
+
+rule "HowIMeetYourMother"
+    when
+        f: Fact(name.equals("mother"), answer.equals("No, and frankly it started getting ridiculous four seasons ago. Come on, writers, just tell us."))
+    then
+        insert(new Fact("HowIMeetYourMother", "stop"));
+end
+
+rule "AmericanHorrorStory"
+    when
+        f: Fact(name.equals("haunted"), answer.equals("Yes, almost everything"))
+    then
+        insert(new Fact("AmericanHorrorStory", "stop"));
+end
+
+rule "BreakingBad"
+    when
+        f: Fact(name.equals("haunted"), answer.equals("Only Walt's eyes, with the absolute corruption of his innermost soul"))
+    then
+        insert(new Fact("BreakingBad","stop"));
+end
+
+rule "kindSports"
+    when
+        f: Fact(name.equals("sports"), answer.equals("Yes"))
+    then
+        
+        Question q=new Question("In the world of Queen, are these sports real life or are the just fantasy?"); 
+        q.addAns("Fantasy");
+        q.addAns("Real. 'I play real sports, not try to be the best at exercisings'");
+        q.showQuestion();
+        
+        insert(new Fact("kindSports", q.getUserAnswer()));
+end
+
+rule "TheLeague"
+    when
+        f: Fact(name.equals("kindSports"), answer.equals("Fantasy"))
+    then
+        insert(new Fact("TheLeague", "stop"));
+end
+
+rule "Eastbound&Down"
+    when
+        f: Fact(name.equals("kindSports"), answer.equals("Real. 'I play real sports, not try to be the best at exercisings'"))
+    then
+        insert(new Fact("Eastbound&Down", "stop"));
+end
+
+rule "cars"
+    when
+        f: Fact(name.equals("cellPhones"), answer.equals("No"))
+    then
+        
+        Question q=new Question("But they at least have cars, right?"); 
+        q.addAns("Yes. Cars. Cars as luxurious as the woman you can never have.");
+        q.addAns("Who needs a car when you can ride DEAD HORSES?");
+        q.showQuestion();
+        
+        insert(new Fact("cars", q.getUserAnswer()));
+end
+
+rule "MadMen"
+    when
+        f: Fact(name.equals("cars"), answer.equals("Yes. Cars. Cars as luxurious as the woman you can never have."))
+    then
+        insert(new Fact("MadMen", "stop"));
+end
+
+rule "GameOfThrones"
+    when
+        f: Fact(name.equals("cars"), answer.equals("Who needs a car when you can ride DEAD HORSES?"))
+    then
+        insert(new Fact("GameOfThrones", "stop"));
+end
+
+rule "kids"
+    when
+        f: Fact(name.equals("pregnant"), answer.equals("No"))
+    then
+    
+        Question q=new Question("Are there still kids on the show, thought?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("kids",q.getUserAnswer()));
+end
+
+rule "northeast"
+    when
+        f: Fact(name.equals("kids"), answer.equals("Yes"))
+    then
+    
+        Question q=new Question("Is the show set in the Northeast?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("northeast",q.getUserAnswer()));
+end
+
+rule "queen"
+    when
+        f: Fact(name.equals("northeast"), answer.equals("Yes"))
+    then
+    
+        Question q=new Question("Is there an evil queen?"); 
+        q.addAns("Yes");
+        q.addAns("Only if you count an ex-wife, amirite???");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("queen",q.getUserAnswer()));
+end
+
+rule "Once"
+    when
+        f: Fact(name.equals("queen"), answer.equals("Yes"))
+    then
+        insert(new Fact("Once", "stop"));
+end
+
+rule "Louie"
+    when
+        f: Fact(name.equals("queen"), answer.equals("Only if you count an ex-wife, amirite???"))
+    then
+        insert(new Fact("Louie", "stop"));
+end
+
+rule "Bob'sBurgers"
+    when
+        f: Fact(name.equals("queen"), answer.equals("No"))
+    then
+        insert(new Fact("Bob'sBurgers", "stop"));
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rule "happy"
+    when
+        f: Fact(name.equals("pregnant"), answer.equals("No, but she thought she was"))
+    then
+    
+    	Question q=new Question("Was she happy about it?"); 
+        q.addAns("No");
+        q.addAns("So happy she lizzed her parents.");
+        q.showQuestion();
+        
+        insert(new Fact("happy",q.getUserAnswer()));
+end
+
+rule "girl"
+    when
+        f: Fact(name.equals("happy"), answer.equals("No"))
+    then
+    
+    	Question q=new Question("Because she's only a girl right?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("girl",q.getUserAnswer()));
+end
+
+rule "girlAdorkable"
+    when
+        f: Fact(name.equals("girl"), answer.equals("Yes"))
+    then
+    
+    	Question q=new Question("A girl who's adorkable?"); 
+        q.addAns("Are you happy now commercials? We're using your dumb made-up world.");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("girlAdorkable",q.getUserAnswer()));
+end
+
+rule "NewGirl"
+    when
+        f: Fact(name.equals("girlAdorkable"), answer.equals("Are you happy now commercials? We're using your dumb made-up world."))
+    then
+        insert(new Fact("NewGirl", "stop"));
+end
+
+rule "Girls"
+    when
+        f: Fact(name.equals("girlAdorkable"), answer.equals("No"))
+    then
+        insert(new Fact("Girls", "stop"));
+end
+
+rule "Veep"
+    when
+        f: Fact(name.equals("girl"), answer.equals("No"))
+    then
+        insert(new Fact("Veep", "stop"));
+end
+
+rule "30Rock"
+    when
+        f: Fact(name.equals("happy"), answer.equals("So happy she lizzed her parents."))
+    then
+        insert(new Fact("30Rock", "stop"));
+end
+
+rule "DoctorWho"
+    when
+        f: Fact(name.equals("pregnant"), answer.equals("What do you mean, 'during'?"))
+    then
+        insert(new Fact("DoctorWho", "stop"));
 end
