@@ -30,6 +30,16 @@ public class DroolsTest {
         	this.name=name;
             this.answer=answer;
         }
+    	
+    	public Fact(String answer) {
+            this.answer=answer;
+            showAnswer();
+        }
+    	
+    	public void showAnswer() {
+			//wyswietla nazwe serialu, do ktorej doszedl uzytkownik (answer)
+    		System.out.println(answer);
+		}
 
 		public String getAnswer() {
 			return answer;

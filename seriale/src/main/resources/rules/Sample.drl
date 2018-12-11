@@ -37,7 +37,7 @@ rule "DowntonAbbey"
     when
         f: Fact(name.equals("black"), answer.equals("No. These characters are so white, they're frightened of the Irish"))
     then     
-        insert(new Fact("DowntonAbbey", "stop"));
+        new Fact("DowntonAbbey");
 end
 
 rule "zombie"
@@ -59,7 +59,7 @@ rule "TheOffice"
     when
         f: Fact(name.equals("zombie"), answer.equals("Only if you count dazed employees"))
     then     
-        insert(new Fact("TheOffice", "stop"));
+        new Fact("TheOffice");
 end
 
 rule "realZombie"
@@ -80,14 +80,14 @@ rule "WalkingDead"
     when
         f: Fact(name.equals("realZombie"), answer.equals("Uh,yes, hello, only ALL THE TIME"))
     then 
-        insert(new Fact("WalkingDead", "stop"));
+        new Fact("WalkingDead");
 end
 
 rule "Community"
     when
         f: Fact(name.equals("realZombie"), answer.equals("No"))
     then  
-        insert(new Fact("Community", "stop"));
+        new Fact("Community");
 end
 
 rule "getShot"
@@ -107,7 +107,7 @@ rule "BoardwalkEmpire"
     when
         f: Fact(name.equals("getShot"), answer.equals("Every so often"))
     then 
-        insert(new Fact("BoardwalkEmpire", "stop"));
+        new Fact("BoardwalkEmpire");
 end
 
 rule "sing"
@@ -138,28 +138,28 @@ rule "Smash"
     when
         f: Fact(name.equals("songs"), answer.equals("Originals. Horrible, horrible originals."))
     then 
-        insert(new Fact("Smash", "stop"));
+        new Fact("Smash");
 end
 
 rule "Glee"
     when
         f: Fact(name.equals("songs"), answer.equals("Covers. Horrible, horrible Covers."))
     then 
-        insert(new Fact("Glee", "stop"));
+        new Fact("Glee");
 end
 
 rule "Parenthood"
     when
         f: Fact(name.equals("sing"), answer.equals("No, thank God"))
     then 
-        insert(new Fact("Parenthood", "stop"));
+        new Fact("Parenthood");
 end
 
 rule "Justified"
     when
         f: Fact(name.equals("getShot"), answer.equals("Literally all the time"))
     then 
-        insert(new Fact("Justified", "stop"));
+        new Fact("Justified");
 end
 
 rule "cellPhones"
@@ -219,28 +219,28 @@ rule "ModernFamily"
     when
         f: Fact(name.equals("mother"), answer.equals("Yeah...? That's a weird question."))
     then
-        insert(new Fact("ModernFamily", "stop"));
+        new Fact("ModernFamily");
 end
 
 rule "HowIMeetYourMother"
     when
         f: Fact(name.equals("mother"), answer.equals("No, and frankly it started getting ridiculous four seasons ago. Come on, writers, just tell us."))
     then
-        insert(new Fact("HowIMeetYourMother", "stop"));
+        new Fact("HowIMeetYourMother");
 end
 
 rule "AmericanHorrorStory"
     when
         f: Fact(name.equals("haunted"), answer.equals("Yes, almost everything"))
     then
-        insert(new Fact("AmericanHorrorStory", "stop"));
+        new Fact("AmericanHorrorStory");
 end
 
 rule "BreakingBad"
     when
         f: Fact(name.equals("haunted"), answer.equals("Only Walt's eyes, with the absolute corruption of his innermost soul"))
     then
-        insert(new Fact("BreakingBad","stop"));
+        new Fact("BreakingBad");
 end
 
 rule "kindSports"
@@ -260,14 +260,14 @@ rule "TheLeague"
     when
         f: Fact(name.equals("kindSports"), answer.equals("Fantasy"))
     then
-        insert(new Fact("TheLeague", "stop"));
+        new Fact("TheLeague");
 end
 
 rule "Eastbound&Down"
     when
         f: Fact(name.equals("kindSports"), answer.equals("Real. 'I play real sports, not try to be the best at exercisings'"))
     then
-        insert(new Fact("Eastbound&Down", "stop"));
+        new Fact("Eastbound&Down");
 end
 
 rule "cars"
@@ -287,14 +287,14 @@ rule "MadMen"
     when
         f: Fact(name.equals("cars"), answer.equals("Yes. Cars. Cars as luxurious as the woman you can never have."))
     then
-        insert(new Fact("MadMen", "stop"));
+        new Fact("MadMen");
 end
 
 rule "GameOfThrones"
     when
         f: Fact(name.equals("cars"), answer.equals("Who needs a car when you can ride DEAD HORSES?"))
     then
-        insert(new Fact("GameOfThrones", "stop"));
+        new Fact("GameOfThrones");
 end
 
 rule "kids"
@@ -341,40 +341,232 @@ rule "Once"
     when
         f: Fact(name.equals("queen"), answer.equals("Yes"))
     then
-        insert(new Fact("Once", "stop"));
+        new Fact("Once");
 end
 
 rule "Louie"
     when
         f: Fact(name.equals("queen"), answer.equals("Only if you count an ex-wife, amirite???"))
     then
-        insert(new Fact("Louie", "stop"));
+        new Fact("Louie");
 end
 
 rule "Bob'sBurgers"
     when
         f: Fact(name.equals("queen"), answer.equals("No"))
     then
-        insert(new Fact("Bob'sBurgers", "stop"));
+        new Fact("Bob'sBurgers");
 end
 
+rule "legitimatePlotline"
+    when
+        f: Fact(name.equals("northeast"), answer.equals("No"))
+    then
+    
+        Question q=new Question("Could diaper changing be a legitimate plotline?"); 
+        q.addAns("Unfortunately, yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("legitimatePlotline",q.getUserAnswer()));
+end
 
+rule "money"
+    when
+        f: Fact(name.equals("legitimatePlotline"), answer.equals("Unfortunately, yes"))
+    then
+    
+        Question q=new Question("Are the characters rich or poor?"); 
+        q.addAns("Rich enough to be best friends with basically Oprah");
+        q.addAns("Poor enough to be best friends with a roller skating homeless dude");
+        q.showQuestion();
+        
+        insert(new Fact("money",q.getUserAnswer()));
+end
 
+rule "UpAllNight"
+    when
+        f: Fact(name.equals("money"), answer.equals("Rich enough to be best friends with basically Oprah"))
+    then
+        new Fact("UpAllNight");
+end
 
+rule "RaisingHope"
+    when
+        f: Fact(name.equals("money"), answer.equals("Poor enough to be best friends with a roller skating homeless dude"))
+    then
+        new Fact("RaisingHope");
+end
 
+rule "Nashville"
+    when
+        f: Fact(name.equals("legitimatePlotline"), answer.equals("No"))
+    then
+        new Fact("Nashville");
+end
 
+rule "work"
+    when
+        f: Fact(name.equals("kids"), answer.equals("No"))
+    then
+    
+        Question q=new Question("Do the characters work for some kind of goverment agency?"); 
+        q.addAns("Yes");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("work",q.getUserAnswer()));
+end
 
+rule "SPYagency"
+    when
+        f: Fact(name.equals("work"), answer.equals("Yes"))
+    then
+    
+        Question q=new Question("Do the characters work for some kind of goverment agency?"); 
+        q.addAns("Danger zone!");
+        q.addAns("No");
+        q.addAns("I'm not at liberty to disclose that. Unless we're sleeping together.");
+        q.showQuestion();
+        
+        insert(new Fact("SPYagency",q.getUserAnswer()));
+end
 
+rule "ParksAndRecreation"
+    when
+        f: Fact(name.equals("SPYagency"), answer.equals("No"))
+    then
+        new Fact("ParksAndRecreation");
+end
 
+rule "Homeland"
+    when
+        f: Fact(name.equals("SPYagency"), answer.equals("I'm not at liberty to disclose that. Unless we're sleeping together."))
+    then
+        new Fact("Homeland");
+end
 
+rule "Archer"
+    when
+        f: Fact(name.equals("SPYagency"), answer.equals("Danger zone!"))
+    then
+        new Fact("Archer");
+end
 
+rule "apartment"
+    when
+        f: Fact(name.equals("work"), answer.equals("No"))
+    then
+    
+        Question q=new Question("Do the characters own apartments they definitely can't afford?"); 
+        q.addAns("WHO HAS A LOFT LIKE THAT ON A BARISTA'S SALARY?");
+        q.addAns("Nope");
+        q.showQuestion();
+        
+        insert(new Fact("apartment",q.getUserAnswer()));
+end
 
+rule "cupcakes"
+    when
+        f: Fact(name.equals("apartment"), answer.equals("WHO HAS A LOFT LIKE THAT ON A BARISTA'S SALARY?"))
+    then
+    
+        Question q=new Question("3 words: Are there cupcakes?"); 
+        q.addAns("You know it");
+        q.addAns("Not unless you count James Van Der Beek");
+        q.addAns("No but that would be ah-MAH-zing");
+        q.showQuestion();
+        
+        insert(new Fact("cupcakes",q.getUserAnswer()));
+end
 
+rule "2BrokeGirls"
+    when
+        f: Fact(name.equals("cupcakes"), answer.equals("You know it"))
+    then
+        new Fact("2BrokeGirls");
+end
 
+rule "Apt23"
+    when
+        f: Fact(name.equals("cupcakes"), answer.equals("Not unless you count James Van Der Beek"))
+    then
+        new Fact("Apt23");
+end
 
+rule "HappyEnding"
+    when
+        f: Fact(name.equals("cupcakes"), answer.equals("No but that would be ah-MAH-zing"))
+    then
+        new Fact("HappyEnding");
+end
 
+rule "sketchComedy"
+    when
+        f: Fact(name.equals("apartment"), answer.equals("Nope"))
+    then
+    
+        Question q=new Question("Okay, so we must be talking sketch comedy."); 
+        q.addAns("Nailed it");
+        q.addAns("No, were not, dummy");
+        q.showQuestion();
+        
+        insert(new Fact("sketchComedy",q.getUserAnswer()));
+end
 
+rule "hipsters"
+    when
+        f: Fact(name.equals("sketchComedy"), answer.equals("Nailed it"))
+    then
+    
+        Question q=new Question("Sketch comedy about hipsters?"); 
+        q.addAns("Yes, but I liked it before it was on Netflix");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("hipsters",q.getUserAnswer()));
+end
 
+rule "Portlandia"
+    when
+        f: Fact(name.equals("hipsters"), answer.equals("Yes, but I liked it before it was on Netflix"))
+    then
+        new Fact("Portlandia");
+end
+
+rule "Key&Peele"
+    when
+        f: Fact(name.equals("hipsters"), answer.equals("No"))
+    then
+        new Fact("Key&Peele");
+end
+
+rule "weed"
+    when
+        f: Fact(name.equals("sketchComedy"), answer.equals("No, were not, dummy"))
+    then
+    
+        Question q=new Question("Huh. Uh...is there weed?"); 
+        q.addAns("Yeah, they shmeoooke a bewrl");
+        q.addAns("No");
+        q.showQuestion();
+        
+        insert(new Fact("weed",q.getUserAnswer()));
+end
+
+rule "Workaholics"
+    when
+        f: Fact(name.equals("weed"), answer.equals("Yeah, they shmeoooke a bewrl"))
+    then
+        new Fact("Workaholics");
+end
+
+rule "Grimm"
+    when
+        f: Fact(name.equals("weed"), answer.equals("No"))
+    then
+        new Fact("Grimm");
+end
 
 rule "happy"
     when
@@ -419,33 +611,33 @@ rule "NewGirl"
     when
         f: Fact(name.equals("girlAdorkable"), answer.equals("Are you happy now commercials? We're using your dumb made-up world."))
     then
-        insert(new Fact("NewGirl", "stop"));
+        new Fact("NewGirl");
 end
 
 rule "Girls"
     when
         f: Fact(name.equals("girlAdorkable"), answer.equals("No"))
     then
-        insert(new Fact("Girls", "stop"));
+        new Fact("Girls");
 end
 
 rule "Veep"
     when
         f: Fact(name.equals("girl"), answer.equals("No"))
     then
-        insert(new Fact("Veep", "stop"));
+        new Fact("Veep");
 end
 
 rule "30Rock"
     when
         f: Fact(name.equals("happy"), answer.equals("So happy she lizzed her parents."))
     then
-        insert(new Fact("30Rock", "stop"));
+        new Fact("30Rock");
 end
 
 rule "DoctorWho"
     when
         f: Fact(name.equals("pregnant"), answer.equals("What do you mean, 'during'?"))
     then
-        insert(new Fact("DoctorWho", "stop"));
+        new Fact("DoctorWho");
 end
