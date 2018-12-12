@@ -4,13 +4,21 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class DroolsTest {
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
+public class DroolsTest {
+	
     public static final void main(String[] args) {
+    	GUI gui = new GUI();
+    	Question.myGui = gui;
+    	Fact.myGui = gui;
         try {
             // load up the knowledge base
 	        KieServices ks = KieServices.Factory.get();
@@ -25,6 +33,7 @@ public class DroolsTest {
     public static class Fact{
     	private String name;
         private String answer;
+        public static GUI myGui;
         
     	public Fact(String name, String answer) {
         	this.name=name;
@@ -39,6 +48,9 @@ public class DroolsTest {
     	public void showAnswer() {
 			//wyswietla nazwe serialu, do ktorej doszedl uzytkownik (answer)
     		System.out.println(answer);
+    		Fact.myGui.setQuestion(answer);
+        	Fact.myGui.setAnswers(null);
+        	myGui.hideAnswers();
 		}
 
 		public String getAnswer() {
@@ -60,22 +72,39 @@ public class DroolsTest {
     }
     
     
-    public static class Question {
-        
+    public static class Question extends JDialog{
+    	public static GUI myGui;
     	private String question;
     	private static ArrayList<String> answers = new ArrayList<String>();
+    	private ArrayList<String> newAnswers = new ArrayList<String>();
         private String userAnswer="Yes";
         
         public Question(String q) {
         	this.question = q;
+        	
         }
-        
+
         public void showQuestion() {
 			//czeka na odpowiedz uzytkownika, ktora wstawia do userAnswer
+        	Question.myGui.setQuestion(question);
+        	Question.myGui.setAnswers(newAnswers);
+        	String answer = null;
+        	while(answer == null) {
+        		answer = myGui.getAnswer();
+        		try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+        	}
+        	this.userAnswer = answer;
+        	//myGui.close();
+        	//newAnswers = null;
 		}
         
         public void addAns(String a) {
 			Question.answers.add(a);
+			newAnswers.add(a);
 		}
         
 		public static ArrayList<String> getAnswers() {
